@@ -1,6 +1,9 @@
 package UI;
 
 import javax.swing.*;
+
+import styles.RoundedBorder;
+
 import java.awt.*;
 
 public class SignupFrame extends JFrame {
@@ -32,7 +35,8 @@ public class SignupFrame extends JFrame {
         rightPanel.setLayout(new GridBagLayout()); //! Il place les composants dans une grille dont tu contrôles chaque cellule
 
         GridBagConstraints gbc = new GridBagConstraints(); //! gbc = position and control
-        gbc.insets = new Insets(10, 0, 10, 0); //! Insets(top, left, bottom, right) px margin
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(15, 0, 15, 0); //! Insets(top, left, bottom, right) px margin
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel signUpLabel = new JLabel("SIGN UP");
@@ -42,10 +46,7 @@ public class SignupFrame extends JFrame {
         JTextField emailField = new JTextField(20);
 
         //! style email field
-        emailField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 2),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-       ));
+        emailField.setBorder(new RoundedBorder(10, new Color(200, 200, 200), 2));
        emailField.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
        //! when we click at the field , the color change using override
@@ -64,10 +65,7 @@ public class SignupFrame extends JFrame {
         JPasswordField passwordField = new JPasswordField(20);
 
         //! style password field
-        passwordField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 2),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-       ));
+        passwordField.setBorder(new RoundedBorder(10, new Color(200, 200, 200), 2));
        passwordField.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
        //! when we click at the field , the color change using override
@@ -89,9 +87,34 @@ public class SignupFrame extends JFrame {
         JButton registerBtn = new JButton("Register Account");
         registerBtn.setBackground(new Color(2, 158, 54));
         registerBtn.setForeground(Color.WHITE);
+        registerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         registerBtn.setFocusPainted(false); //! remove the default style
 
-        JLabel loginLabel = new JLabel("have an account ? ");
+        registerBtn.addActionListener(e -> {
+            if (emailField.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Email required", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (passwordField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(this, "Password required", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        });
+
+        //! style button hover
+        registerBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                registerBtn.setBackground(new Color(0, 130, 40));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                registerBtn.setBackground(new Color(2, 158, 54));
+            }
+        });
+
+        JLabel loginLabel = new JLabel("Have an account ?");
         JButton loginBtn = new JButton("Sign in here");
         loginBtn.setContentAreaFilled(false);
         loginBtn.setBorderPainted(false);
